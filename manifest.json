@@ -1,1 +1,26 @@
-{"name":"Campeonato Foot","short_name":"Camp Foot","start_url":"./","display":"standalone","background_color":"#06100b","theme_color":"#08110d","description":"Arena competitiva para campeonatos e desafios de futebol mobile.","icons":[]}
+{
+  "name": "Campeonato Foot",
+  "short_name": "Camp Foot",
+  "description": "Arena competitiva para campeonatos e desafios de futebol mobile.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#06100b",
+  "theme_color": "#08110d",
+  "icons": [
+    {
+      "src": "icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
