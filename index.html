@@ -42,16 +42,30 @@
           <button class="primary full" id="checkinBtn">FAZER CHECK-IN</button>
         </div>
         <div class="panel">
-          <span class="eyebrow">PÓS-JOGO</span><h2>Enviar resultado</h2><p>Informe o placar exatamente como terminou e anexe um print da tela final.</p>
+          <span class="eyebrow">PÓS-JOGO</span><h2>Enviar resultado</h2><p>Informe o placar exatamente como terminou e anexe um print ou vídeo da tela final.</p>
           <div class="meta"><span>SEUS GOLS<br><b><input id="myGoals" type="number" min="0" value="3" style="width:64px"></b></span><span>GOLS DELE<br><b><input id="opGoals" type="number" min="0" value="2" style="width:64px"></b></span></div>
-          <label class="proof-box" style="display:block;cursor:pointer">PRINT DO RESULTADO<br><b id="proofName">Selecionar imagem</b><input id="proofInput" type="file" accept="image/*,video/*" hidden></label>
+          <label class="proof-box" style="display:block;cursor:pointer">PROVA DO RESULTADO<br><b id="proofName">Selecionar imagem ou vídeo</b><input id="proofInput" type="file" accept="image/*,video/*" hidden></label>
           <button class="primary full" id="submitResult">ENVIAR PARA VALIDAÇÃO</button>
+          <button class="secondary full" id="simulateOpponent">SIMULAR ENVIO DO ADVERSÁRIO</button>
           <div class="match-found hidden" id="validationBox"></div>
         </div>
       </div>
     </section>
 
     <section class="section split" id="desafios"><div class="panel challenge-panel"><span class="eyebrow">1 × 1</span><h2>Desafio rápido</h2><p>Escolha seu nível e encontre um adversário disponível.</p><div class="quick-options"><button class="chip active">Iniciante</button><button class="chip">Intermediário</button><button class="chip">Pro</button></div><button class="primary full" id="findOpponent">ENCONTRAR ADVERSÁRIO</button><div class="match-found hidden" id="matchFound"></div></div><div class="panel ranking-panel" id="ranking"><div class="section-head compact"><div><span class="eyebrow">TOP DA SEMANA</span><h2>Ranking</h2></div><span class="season">TEMPORADA 01</span></div><div id="rankingList"></div></div></section>
+
+    <section class="section" id="historico">
+      <div class="section-head"><div><span class="eyebrow">MINHAS PARTIDAS</span><h2>Histórico e andamento</h2></div><span class="season" id="historyCount">0 partidas</span></div>
+      <div class="panel"><div id="historyList"><p>Nenhuma partida registrada ainda.</p></div></div>
+    </section>
+
+    <section class="section" id="admin">
+      <div class="section-head"><div><span class="eyebrow">PAINEL ADMIN • MVP</span><h2>Disputas e decisões</h2></div><span class="season" id="adminCount">0 pendências</span></div>
+      <div class="split">
+        <div class="panel"><h3>Fila de análise</h3><p>Quando os placares enviados pelos dois jogadores não coincidirem, a partida entra aqui.</p><div id="disputeList"><div class="proof-box">Nenhuma disputa aberta.</div></div></div>
+        <div class="panel"><h3>Regras de decisão</h3><p>O administrador deve conferir as provas dos dois jogadores, horário do arquivo, placar final e sinais de edição.</p><div class="proof-box">1. Provas compatíveis → validar vencedor.<br>2. Provas conflitantes → pedir vídeo adicional.<br>3. Fraude comprovada → derrota administrativa + punição.<br>4. Sem prova suficiente → partida anulada ou repetida.</div></div>
+      </div>
+    </section>
   </main>
 
   <nav class="bottom-nav"><a href="#inicio" class="active"><span>⌂</span>Início</a><a href="#torneios"><span>♜</span>Torneios</a><a href="#sala"><span>◉</span>Sala CF</a><a href="#ranking"><span>★</span>Ranking</a><button id="profileBtn"><span>●</span>Perfil</button></nav>
