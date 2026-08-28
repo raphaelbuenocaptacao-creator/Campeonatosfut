@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#08110d" />
+  <meta name="description" content="Campeonato Foot — arena de campeonatos e desafios de futebol mobile." />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>Campeonato Foot</title>
+</head>
+<body>
+  <div class="noise"></div>
+  <header class="topbar">
+    <a class="brand" href="#inicio" aria-label="Campeonato Foot">
+      <span class="brand-mark">CF</span>
+      <span><b>CAMPEONATO</b><em>FOOT</em></span>
+    </a>
+    <button class="wallet" id="walletBtn" aria-label="Abrir carteira">
+      <span>CRÉDITOS</span><strong id="walletBalance">1.250</strong>
+    </button>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-copy">
+        <span class="eyebrow">ARENA COMPETITIVA • MOBILE</span>
+        <h1>Jogue. Vença.<br><span>Suba no ranking.</span></h1>
+        <p>Entre em campeonatos, desafie jogadores no 1x1 e construa sua reputação dentro da arena.</p>
+        <div class="hero-actions">
+          <button class="primary" data-action="join-featured">ENTRAR NO CAMPEONATO</button>
+          <button class="secondary" data-scroll="#torneios">VER TORNEIOS</button>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="live-dot">AO VIVO</div>
+        <div class="matchup">
+          <div class="player"><div class="avatar">R7</div><b>RafaPro</b><small>Brasil • 1.842 pts</small></div>
+          <div class="score"><span>3</span><i>×</i><span>2</span><small>2º TEMPO</small></div>
+          <div class="player"><div class="avatar alt">NX</div><b>NeyX</b><small>Brasil • 1.790 pts</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats">
+      <article><strong>2.847</strong><span>JOGADORES</span></article>
+      <article><strong>186</strong><span>PARTIDAS HOJE</span></article>
+      <article><strong>42</strong><span>TORNEIOS ABERTOS</span></article>
+      <article><strong>98,7%</strong><span>FAIR PLAY</span></article>
+    </section>
+
+    <section class="section" id="torneios">
+      <div class="section-head"><div><span class="eyebrow">COMPITA AGORA</span><h2>Torneios em destaque</h2></div><button class="text-btn" data-action="show-all">Ver todos →</button></div>
+      <div class="tournament-grid" id="tournamentGrid"></div>
+    </section>
+
+    <section class="section split" id="desafios">
+      <div class="panel challenge-panel">
+        <span class="eyebrow">1 × 1</span><h2>Desafio rápido</h2><p>Defina o nível, encontre um adversário disponível e combine sua partida.</p>
+        <div class="quick-options">
+          <button class="chip active" data-level="iniciante">Iniciante</button>
+          <button class="chip" data-level="intermediario">Intermediário</button>
+          <button class="chip" data-level="pro">Pro</button>
+        </div>
+        <button class="primary full" id="findOpponent">ENCONTRAR ADVERSÁRIO</button>
+        <div class="match-found hidden" id="matchFound"></div>
+      </div>
+      <div class="panel ranking-panel" id="ranking">
+        <div class="section-head compact"><div><span class="eyebrow">TOP DA SEMANA</span><h2>Ranking</h2></div><span class="season">TEMPORADA 01</span></div>
+        <div id="rankingList"></div>
+      </div>
+    </section>
+
+    <section class="section" id="como-funciona">
+      <div class="section-head"><div><span class="eyebrow">FLUXO SIMPLES</span><h2>Como funciona</h2></div></div>
+      <div class="steps">
+        <article><span>01</span><h3>Crie seu perfil</h3><p>Nome de jogador, plataforma, nível e ID usado no jogo.</p></article>
+        <article><span>02</span><h3>Entre na arena</h3><p>Escolha torneios gratuitos, ligas ou desafios 1x1.</p></article>
+        <article><span>03</span><h3>Registre o resultado</h3><p>Os dois jogadores confirmam o placar e podem anexar evidências.</p></article>
+        <article><span>04</span><h3>Ganhe reputação</h3><p>Vitórias aumentam ranking, nível e acesso a campeonatos maiores.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Navegação principal">
+    <a href="#inicio" class="active"><span>⌂</span>Início</a>
+    <a href="#torneios"><span>♜</span>Torneios</a>
+    <a href="#desafios"><span>⚔</span>Desafios</a>
+    <a href="#ranking"><span>★</span>Ranking</a>
+    <button id="profileBtn"><span>●</span>Perfil</button>
+  </nav>
+
+  <dialog id="modal">
+    <button class="modal-close" id="modalClose" aria-label="Fechar">×</button>
+    <div id="modalContent"></div>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
