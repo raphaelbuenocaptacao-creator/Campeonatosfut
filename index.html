@@ -18,96 +18,45 @@
 <body>
   <div class="noise"></div>
   <header class="topbar">
-    <a class="brand" href="#inicio" aria-label="Campeonato Foot">
-      <span class="brand-mark">CF</span>
-      <span><b>CAMPEONATO</b><em>FOOT</em></span>
-    </a>
-    <button class="wallet" id="walletBtn" aria-label="Abrir carteira">
-      <span>CRÉDITOS</span><strong id="walletBalance">1.250</strong>
-    </button>
+    <a class="brand" href="#inicio" aria-label="Campeonato Foot"><span class="brand-mark">CF</span><span><b>CAMPEONATO</b><em>FOOT</em></span></a>
+    <button class="wallet" id="walletBtn"><span>CRÉDITOS</span><strong id="walletBalance">1.250</strong></button>
   </header>
 
   <main>
     <section class="hero" id="inicio">
-      <div class="hero-copy">
-        <span class="eyebrow">ARENA COMPETITIVA • MOBILE</span>
-        <h1>Jogue. Vença.<br><span>Suba no ranking.</span></h1>
-        <p>Entre em campeonatos, desafie jogadores no 1x1 e construa sua reputação dentro da arena.</p>
-        <div class="hero-actions">
-          <button class="primary" data-action="join-featured">ENTRAR NO CAMPEONATO</button>
-          <button class="secondary" data-scroll="#torneios">VER TORNEIOS</button>
+      <div class="hero-copy"><span class="eyebrow">ARENA COMPETITIVA • MOBILE</span><h1>Jogue. Vença.<br><span>Suba no ranking.</span></h1><p>Entre em campeonatos, desafie jogadores no 1x1 e valide cada resultado dentro da Sala CF.</p><div class="hero-actions"><button class="primary" data-action="join-featured">ENTRAR NO CAMPEONATO</button><button class="secondary" data-scroll="#sala">ABRIR SALA CF</button></div></div>
+      <div class="hero-card"><div class="live-dot">AO VIVO</div><div class="matchup"><div class="player"><div class="avatar">RB</div><b>RafaPro</b><small>Campos do Jordão/SP</small></div><div class="score"><span>3</span><i>×</i><span>2</span><small>VALIDANDO</small></div><div class="player"><div class="avatar alt">PX</div><b>PaulistaX</b><small>São Paulo/SP</small></div></div></div>
+    </section>
+
+    <section class="stats"><article><strong>2.847</strong><span>JOGADORES</span></article><article><strong>186</strong><span>PARTIDAS HOJE</span></article><article><strong>42</strong><span>TORNEIOS ABERTOS</span></article><article><strong>98,7%</strong><span>FAIR PLAY</span></article></section>
+
+    <section class="section" id="torneios"><div class="section-head"><div><span class="eyebrow">COMPITA AGORA</span><h2>Torneios em destaque</h2></div><button class="text-btn" data-action="show-all">Ver todos →</button></div><div class="tournament-grid" id="tournamentGrid"></div></section>
+
+    <section class="section" id="sala">
+      <div class="section-head"><div><span class="eyebrow">SALA CF</span><h2>Partida online com prova</h2></div><span class="season">CF-92841</span></div>
+      <div class="split">
+        <div class="panel">
+          <span class="eyebrow">1 × 1 • CHECK-IN</span><h2>RafaPro × PaulistaX</h2><p>Os dois entram nesta sala, confirmam presença e depois jogam no eFootball/PES usando os IDs abaixo.</p>
+          <div class="proof-box">Seu ID: <b>RAFA-88421</b><br>Adversário: <b>PAULISTA-7712</b><br>Sala CF: <b>CF-92841</b></div>
+          <div class="meta"><span>VOCÊ<br><b id="myCheck">Aguardando</b></span><span>ADVERSÁRIO<br><b id="opCheck">Aguardando</b></span><span>STATUS<br><b id="roomStatus">Pré-jogo</b></span></div>
+          <button class="primary full" id="checkinBtn">FAZER CHECK-IN</button>
+        </div>
+        <div class="panel">
+          <span class="eyebrow">PÓS-JOGO</span><h2>Enviar resultado</h2><p>Informe o placar exatamente como terminou e anexe um print da tela final.</p>
+          <div class="meta"><span>SEUS GOLS<br><b><input id="myGoals" type="number" min="0" value="3" style="width:64px"></b></span><span>GOLS DELE<br><b><input id="opGoals" type="number" min="0" value="2" style="width:64px"></b></span></div>
+          <label class="proof-box" style="display:block;cursor:pointer">PRINT DO RESULTADO<br><b id="proofName">Selecionar imagem</b><input id="proofInput" type="file" accept="image/*,video/*" hidden></label>
+          <button class="primary full" id="submitResult">ENVIAR PARA VALIDAÇÃO</button>
+          <div class="match-found hidden" id="validationBox"></div>
         </div>
       </div>
-      <div class="hero-card">
-        <div class="live-dot">AO VIVO</div>
-        <div class="matchup">
-          <div class="player"><div class="avatar">R7</div><b>RafaPro</b><small>Brasil • 1.842 pts</small></div>
-          <div class="score"><span>3</span><i>×</i><span>2</span><small>2º TEMPO</small></div>
-          <div class="player"><div class="avatar alt">NX</div><b>NeyX</b><small>Brasil • 1.790 pts</small></div>
-        </div>
-      </div>
     </section>
 
-    <section class="stats">
-      <article><strong>2.847</strong><span>JOGADORES</span></article>
-      <article><strong>186</strong><span>PARTIDAS HOJE</span></article>
-      <article><strong>42</strong><span>TORNEIOS ABERTOS</span></article>
-      <article><strong>98,7%</strong><span>FAIR PLAY</span></article>
-    </section>
-
-    <section class="section" id="torneios">
-      <div class="section-head"><div><span class="eyebrow">COMPITA AGORA</span><h2>Torneios em destaque</h2></div><button class="text-btn" data-action="show-all">Ver todos →</button></div>
-      <div class="tournament-grid" id="tournamentGrid"></div>
-    </section>
-
-    <section class="section split" id="desafios">
-      <div class="panel challenge-panel">
-        <span class="eyebrow">1 × 1</span><h2>Desafio rápido</h2><p>Defina o nível, encontre um adversário disponível e combine sua partida.</p>
-        <div class="quick-options">
-          <button class="chip active" data-level="iniciante">Iniciante</button>
-          <button class="chip" data-level="intermediario">Intermediário</button>
-          <button class="chip" data-level="pro">Pro</button>
-        </div>
-        <button class="primary full" id="findOpponent">ENCONTRAR ADVERSÁRIO</button>
-        <div class="match-found hidden" id="matchFound"></div>
-      </div>
-      <div class="panel ranking-panel" id="ranking">
-        <div class="section-head compact"><div><span class="eyebrow">TOP DA SEMANA</span><h2>Ranking</h2></div><span class="season">TEMPORADA 01</span></div>
-        <div id="rankingList"></div>
-      </div>
-    </section>
-
-    <section class="section" id="como-funciona">
-      <div class="section-head"><div><span class="eyebrow">FLUXO SIMPLES</span><h2>Como funciona</h2></div></div>
-      <div class="steps">
-        <article><span>01</span><h3>Crie seu perfil</h3><p>Nome de jogador, plataforma, nível e ID usado no jogo.</p></article>
-        <article><span>02</span><h3>Entre na arena</h3><p>Escolha torneios gratuitos, ligas ou desafios 1x1.</p></article>
-        <article><span>03</span><h3>Registre o resultado</h3><p>Os dois jogadores confirmam o placar e podem anexar evidências.</p></article>
-        <article><span>04</span><h3>Ganhe reputação</h3><p>Vitórias aumentam ranking, nível e acesso a campeonatos maiores.</p></article>
-      </div>
-    </section>
+    <section class="section split" id="desafios"><div class="panel challenge-panel"><span class="eyebrow">1 × 1</span><h2>Desafio rápido</h2><p>Escolha seu nível e encontre um adversário disponível.</p><div class="quick-options"><button class="chip active">Iniciante</button><button class="chip">Intermediário</button><button class="chip">Pro</button></div><button class="primary full" id="findOpponent">ENCONTRAR ADVERSÁRIO</button><div class="match-found hidden" id="matchFound"></div></div><div class="panel ranking-panel" id="ranking"><div class="section-head compact"><div><span class="eyebrow">TOP DA SEMANA</span><h2>Ranking</h2></div><span class="season">TEMPORADA 01</span></div><div id="rankingList"></div></div></section>
   </main>
 
-  <nav class="bottom-nav" aria-label="Navegação principal">
-    <a href="#inicio" class="active"><span>⌂</span>Início</a>
-    <a href="#torneios"><span>♜</span>Torneios</a>
-    <a href="#desafios"><span>⚔</span>Desafios</a>
-    <a href="#ranking"><span>★</span>Ranking</a>
-    <button id="profileBtn"><span>●</span>Perfil</button>
-  </nav>
-
-  <dialog id="modal">
-    <button class="modal-close" id="modalClose" aria-label="Fechar">×</button>
-    <div id="modalContent"></div>
-  </dialog>
-
+  <nav class="bottom-nav"><a href="#inicio" class="active"><span>⌂</span>Início</a><a href="#torneios"><span>♜</span>Torneios</a><a href="#sala"><span>◉</span>Sala CF</a><a href="#ranking"><span>★</span>Ranking</a><button id="profileBtn"><span>●</span>Perfil</button></nav>
+  <dialog id="modal"><button class="modal-close" id="modalClose">×</button><div id="modalContent"></div></dialog>
   <script src="app.js"></script>
-  <script>
-    if ('serviceWorker' in navigator && window.isSecureContext) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(error => console.error('PWA: falha ao registrar service worker', error));
-      });
-    }
-  </script>
+  <script>if('serviceWorker' in navigator&&window.isSecureContext){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}</script>
 </body>
 </html>
