@@ -1,10 +1,9 @@
-const CACHE = 'campeonato-foot-shell-v3';
+const CACHE = 'campeonato-foot-shell-v4';
 const APP_SHELL = new Set([
   './',
   './index.html',
   './styles.css',
   './app.js',
-  './manifest.json',
   './manifest.webmanifest',
   './icons/icon-192.svg',
   './icons/icon-512.svg',
@@ -37,7 +36,6 @@ function shellKey(url) {
   if (path === 'index.html') return './index.html';
   if (path === 'styles.css') return './styles.css';
   if (path === 'app.js') return './app.js';
-  if (path === 'manifest.json') return './manifest.json';
   if (path === 'manifest.webmanifest') return './manifest.webmanifest';
   if (url.pathname.includes('/icons/icon-192.svg')) return './icons/icon-192.svg';
   if (url.pathname.includes('/icons/icon-512.svg')) return './icons/icon-512.svg';
