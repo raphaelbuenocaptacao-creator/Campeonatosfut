@@ -1,4 +1,5 @@
-const CACHE = 'campeonato-foot-shell-v4';
+const CACHE = 'campeonato-foot-shell-v5-safe';
+const OFFLINE = './index.html';
 const APP_SHELL = new Set([
   './',
   './index.html',
@@ -10,27 +11,35 @@ const APP_SHELL = new Set([
   './icons/icon-512-maskable.svg'
 ]);
 
+const PRIVATE_PATH = /\/(api|auth|login|logout|admin|session|token|password|account|profile|user|me)(\/|$)/i;
+const PRIVATE_QUERY = /(token|access_token|refresh_token|password|secret|session|auth|authorization|api[_-]?key)=/i;
+
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll([...APP_SHELL])));
-  self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE)
+      .then(cache => cache.addAll([...APP_SHELL]))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key))))
+    caches.keys()
+      .then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key))))
+      .then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
 function isSensitiveRequest(request, url) {
   if (request.method !== 'GET') return true;
   if (request.headers.has('authorization') || request.headers.has('cookie')) return true;
-  const p = url.pathname.toLowerCase();
-  const sensitive = ['/api/', '/auth', '/login', '/logout', '/admin', '/session', '/token', '/password', '/account', '/profile'];
-  return sensitive.some(part => p.includes(part));
+  if (PRIVATE_PATH.test(url.pathname)) return true;
+  if (PRIVATE_QUERY.test(url.search)) return true;
+  return false;
 }
 
 function shellKey(url) {
+  if (url.search) return null;
   const path = url.pathname.split('/').pop();
   if (!path) return './';
   if (path === 'index.html') return './index.html';
@@ -51,9 +60,8 @@ self.addEventListener('fetch', event => {
 
   if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(request)
-        .then(response => response)
-        .catch(() => caches.match('./index.html'))
+      fetch(request, { cache: 'no-store' })
+        .catch(() => caches.match(OFFLINE))
     );
     return;
   }
@@ -62,11 +70,6 @@ self.addEventListener('fetch', event => {
   if (!key || !APP_SHELL.has(key)) return;
 
   event.respondWith(
-    caches.match(key).then(cached => cached || fetch(request).then(response => {
-      if (!response || response.status !== 200 || response.type !== 'basic') return response;
-      const copy = response.clone();
-      caches.open(CACHE).then(cache => cache.put(key, copy));
-      return response;
-    }))
+    caches.match(key).then(cached => cached || fetch(request, { cache: 'no-store' }))
   );
 });
