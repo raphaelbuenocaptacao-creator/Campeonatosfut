@@ -1,4 +1,4 @@
-const CACHE = 'campeonato-foot-shell-v5-safe';
+const CACHE = 'campeonato-foot-shell-v6-safe';
 const OFFLINE = './index.html';
 const APP_SHELL = new Set([
   './',
@@ -12,7 +12,7 @@ const APP_SHELL = new Set([
 ]);
 
 const PRIVATE_PATH = /\/(api|auth|login|logout|admin|session|token|password|account|profile|user|me)(\/|$)/i;
-const PRIVATE_QUERY = /(token|access_token|refresh_token|password|secret|session|auth|authorization|api[_-]?key)=/i;
+const PRIVATE_QUERY = /(^|[?&])(token|access_token|refresh_token|password|passwd|secret|session|auth|authorization|api[_-]?key|code|credential|credentials)=/i;
 
 self.addEventListener('install', event => {
   event.waitUntil(
