@@ -1,4 +1,5 @@
-const CACHE = 'campeonato-foot-shell-v7-safe';
+const CACHE_PREFIX = 'campeonato-foot-';
+const CACHE = `${CACHE_PREFIX}shell-v8-safe`;
 const OFFLINE = './index.html';
 const APP_SHELL = new Set([
   './',
@@ -15,7 +16,7 @@ const PRIVATE_PATH = /\/(api|auth|login|logout|admin|session|token|password|acco
 const PRIVATE_QUERY = /(^|[?&])(token|access_token|refresh_token|password|passwd|secret|session|auth|authorization|api[_-]?key|code|credential|credentials)=/i;
 
 function canCacheResponse(response) {
-  if (!response || !response.ok || response.type === 'opaque') return false;
+  if (!response || !response.ok || response.status === 206 || response.type === 'opaque') return false;
   const cacheControl = response.headers.get('cache-control') || '';
   if (/private|no-store/i.test(cacheControl)) return false;
   if (response.headers.has('set-cookie')) return false;
@@ -30,7 +31,7 @@ async function precacheShell() {
       const response = await fetch(request);
       if (canCacheResponse(response)) await cache.put(resource, response.clone());
     } catch (_) {
-      // A failed optional shell asset must not poison installation.
+      // Optional shell failures must not poison installation.
     }
   }));
 }
@@ -42,7 +43,11 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys()
-      .then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key))))
+      .then(keys => Promise.all(
+        keys
+          .filter(key => key.startsWith(CACHE_PREFIX) && key !== CACHE)
+          .map(key => caches.delete(key))
+      ))
       .then(() => self.clients.claim())
   );
 });
@@ -78,8 +83,10 @@ self.addEventListener('fetch', event => {
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request, { cache: 'no-store', credentials: 'same-origin' })
-        .then(response => response)
-        .catch(() => caches.match(OFFLINE))
+        .catch(async () => {
+          const cache = await caches.open(CACHE);
+          return cache.match(OFFLINE);
+        })
     );
     return;
   }
@@ -88,13 +95,11 @@ self.addEventListener('fetch', event => {
   if (!key || !APP_SHELL.has(key)) return;
 
   event.respondWith(
-    caches.match(key).then(async cached => {
+    caches.open(CACHE).then(async cache => {
+      const cached = await cache.match(key);
       if (cached) return cached;
       const response = await fetch(request, { cache: 'no-store', credentials: 'omit' });
-      if (canCacheResponse(response)) {
-        const cache = await caches.open(CACHE);
-        await cache.put(key, response.clone());
-      }
+      if (canCacheResponse(response)) await cache.put(key, response.clone());
       return response;
     })
   );
