@@ -28,13 +28,21 @@ jobs:
         run: |
           set -euo pipefail
           test -f index.html
+          test -f app.js
           test -f manifest.webmanifest
           test -f sw.js
           test -f icons/icon-192.png -o -f icons/icon-192.svg
           test -f icons/icon-512.png -o -f icons/icon-512.svg
-          grep -q 'display' manifest.webmanifest
-          grep -q 'start_url' manifest.webmanifest
-          grep -q 'serviceWorker' index.html
+          grep -q '"name"' manifest.webmanifest
+          grep -q '"short_name"' manifest.webmanifest
+          grep -q '"start_url"' manifest.webmanifest
+          grep -q '"display"' manifest.webmanifest
+          grep -q '"theme_color"' manifest.webmanifest
+          grep -q 'rel="manifest"' index.html
+          grep -q 'theme-color' index.html
+          grep -q 'serviceWorker' app.js
+          grep -q 'register' app.js
+          grep -q 'caches' sw.js
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
