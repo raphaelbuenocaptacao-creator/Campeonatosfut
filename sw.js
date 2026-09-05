@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'campeonato-foot-';
-const CACHE = `${CACHE_PREFIX}shell-v8-safe`;
+const CACHE = `${CACHE_PREFIX}shell-v9-raster-safe`;
 const OFFLINE = './index.html';
 const APP_SHELL = new Set([
   './',
@@ -7,19 +7,19 @@ const APP_SHELL = new Set([
   './styles.css',
   './app.js',
   './manifest.webmanifest',
-  './icons/icon-192.svg',
-  './icons/icon-512.svg',
-  './icons/icon-512-maskable.svg'
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/icon-512-maskable.png'
 ]);
 
 const PRIVATE_PATH = /\/(api|auth|login|logout|admin|session|token|password|account|profile|user|me)(\/|$)/i;
 const PRIVATE_QUERY = /(^|[?&])(token|access_token|refresh_token|password|passwd|secret|session|auth|authorization|api[_-]?key|code|credential|credentials)=/i;
 
 function canCacheResponse(response) {
-  if (!response || !response.ok || response.status === 206 || response.type === 'opaque') return false;
+  if (!response || !response.ok || response.status === 206 || response.type === 'opaque' || response.redirected) return false;
   const cacheControl = response.headers.get('cache-control') || '';
   if (/private|no-store/i.test(cacheControl)) return false;
-  if (response.headers.has('set-cookie')) return false;
+  if (response.headers.has('set-cookie') || response.headers.has('content-range')) return false;
   return true;
 }
 
@@ -27,7 +27,7 @@ async function precacheShell() {
   const cache = await caches.open(CACHE);
   await Promise.all([...APP_SHELL].map(async resource => {
     try {
-      const request = new Request(resource, { credentials: 'omit', cache: 'reload' });
+      const request = new Request(resource, { credentials: 'omit', cache: 'reload', redirect: 'error' });
       const response = await fetch(request);
       if (canCacheResponse(response)) await cache.put(resource, response.clone());
     } catch (_) {
@@ -55,6 +55,7 @@ self.addEventListener('activate', event => {
 function isSensitiveRequest(request, url) {
   if (request.method !== 'GET') return true;
   if (request.headers.has('authorization') || request.headers.has('cookie')) return true;
+  if (request.headers.has('range') || request.headers.has('if-range')) return true;
   if (PRIVATE_PATH.test(url.pathname)) return true;
   if (PRIVATE_QUERY.test(url.search)) return true;
   return false;
@@ -68,9 +69,9 @@ function shellKey(url) {
   if (path === 'styles.css') return './styles.css';
   if (path === 'app.js') return './app.js';
   if (path === 'manifest.webmanifest') return './manifest.webmanifest';
-  if (url.pathname.includes('/icons/icon-192.svg')) return './icons/icon-192.svg';
-  if (url.pathname.includes('/icons/icon-512.svg')) return './icons/icon-512.svg';
-  if (url.pathname.includes('/icons/icon-512-maskable.svg')) return './icons/icon-512-maskable.svg';
+  if (url.pathname.includes('/icons/icon-192.png')) return './icons/icon-192.png';
+  if (url.pathname.includes('/icons/icon-512.png')) return './icons/icon-512.png';
+  if (url.pathname.includes('/icons/icon-512-maskable.png')) return './icons/icon-512-maskable.png';
   return null;
 }
 
@@ -82,7 +83,7 @@ self.addEventListener('fetch', event => {
 
   if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(request, { cache: 'no-store', credentials: 'same-origin' })
+      fetch(request, { cache: 'no-store', credentials: 'same-origin', redirect: 'error' })
         .catch(async () => {
           const cache = await caches.open(CACHE);
           return cache.match(OFFLINE);
@@ -98,7 +99,7 @@ self.addEventListener('fetch', event => {
     caches.open(CACHE).then(async cache => {
       const cached = await cache.match(key);
       if (cached) return cached;
-      const response = await fetch(request, { cache: 'no-store', credentials: 'omit' });
+      const response = await fetch(request, { cache: 'no-store', credentials: 'omit', redirect: 'error' });
       if (canCacheResponse(response)) await cache.put(key, response.clone());
       return response;
     })
