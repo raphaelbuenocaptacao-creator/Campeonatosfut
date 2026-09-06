@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'campeonato-foot-';
-const CACHE = `${CACHE_PREFIX}shell-v9-raster-safe`;
+const CACHE = `${CACHE_PREFIX}shell-v10-private-vary-safe`;
 const OFFLINE = './index.html';
 const APP_SHELL = new Set([
   './',
@@ -15,11 +15,19 @@ const APP_SHELL = new Set([
 const PRIVATE_PATH = /\/(api|auth|login|logout|admin|session|token|password|account|profile|user|me)(\/|$)/i;
 const PRIVATE_QUERY = /(^|[?&])(token|access_token|refresh_token|password|passwd|secret|session|auth|authorization|api[_-]?key|code|credential|credentials)=/i;
 
+function variesPrivate(response) {
+  const vary = (response.headers.get('vary') || '').toLowerCase();
+  return vary.split(',').some(value => {
+    const key = value.trim();
+    return key === 'cookie' || key === 'authorization';
+  });
+}
+
 function canCacheResponse(response) {
   if (!response || !response.ok || response.status === 206 || response.type === 'opaque' || response.redirected) return false;
   const cacheControl = response.headers.get('cache-control') || '';
   if (/private|no-store/i.test(cacheControl)) return false;
-  if (response.headers.has('set-cookie') || response.headers.has('content-range')) return false;
+  if (response.headers.has('set-cookie') || response.headers.has('content-range') || variesPrivate(response)) return false;
   return true;
 }
 
