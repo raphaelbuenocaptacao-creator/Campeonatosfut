@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'campeonato-foot-';
-const CACHE = `${CACHE_PREFIX}shell-v11-private-vary-star-safe`;
+const CACHE = `${CACHE_PREFIX}shell-v12-private-vary-range-safe`;
 const OFFLINE = './index.html';
 const APP_SHELL = new Set([
   './',
@@ -19,7 +19,7 @@ function variesPrivate(response) {
   const vary = (response.headers.get('vary') || '').toLowerCase();
   return vary.split(',').some(value => {
     const key = value.trim();
-    return key === '*' || key === 'cookie' || key === 'authorization';
+    return key === '*' || key === 'cookie' || key === 'authorization' || key === 'range';
   });
 }
 
