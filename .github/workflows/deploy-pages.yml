@@ -29,6 +29,7 @@ jobs:
           set -euo pipefail
           test -f index.html
           test -f app.js
+          test -f pwa-install.js
           test -f manifest.webmanifest
           test -f sw.js
           test -f icons/icon-192.png -o -f icons/icon-192.svg
@@ -40,8 +41,12 @@ jobs:
           grep -q '"theme_color"' manifest.webmanifest
           grep -q 'rel="manifest"' index.html
           grep -q 'theme-color' index.html
-          grep -q 'serviceWorker' app.js
-          grep -q 'register' app.js
+          grep -q 'pwa-install.js' index.html
+          grep -q 'serviceWorker' pwa-install.js
+          grep -q 'register' pwa-install.js
+          grep -q 'beforeinstallprompt' pwa-install.js
+          grep -q 'appinstalled' pwa-install.js
+          grep -q 'updateViaCache' pwa-install.js
           grep -q 'caches' sw.js
 
       - name: Configure Pages
