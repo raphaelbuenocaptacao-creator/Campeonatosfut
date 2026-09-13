@@ -1,5 +1,5 @@
 (() => {
-  const SW_VERSION = '12';
+  const SW_VERSION = 'shell-v13-private-vary-range-safe';
   const installButton = document.getElementById('installAppBtn');
   let deferredPrompt = null;
 
