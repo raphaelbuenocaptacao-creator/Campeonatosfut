@@ -3,6 +3,7 @@ name: Campeonatosfut PWA Audit
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -44,6 +45,8 @@ jobs:
           if (regMatch[1] !== swVersion) throw new Error(`SW version mismatch: ${regMatch[1]} != ${swVersion}`);
           if (!/updateViaCache:\s*'none'/.test(reg)) throw new Error('updateViaCache none missing');
           if (!/beforeinstallprompt/.test(reg)) throw new Error('install prompt support missing');
+          if (!/visibilitychange/.test(reg) || !/visibilityState\s*===\s*'visible'/.test(reg) || !/registration\.update\(\)/.test(reg)) throw new Error('foreground SW update check missing');
+          if (!/controllerchange/.test(reg) || !/hadController/.test(reg) || !/window\.location\.reload\(\)/.test(reg)) throw new Error('safe SW controller handoff missing');
 
           for (const token of ["request.headers.has('authorization')", "request.headers.has('cookie')", "request.headers.has('range')", "request.headers.has('if-range')", "response.status === 206", "response.headers.has('set-cookie')", "response.headers.has('content-range')"]) {
             if (!sw.includes(token)) throw new Error(`cache safety check missing: ${token}`);
